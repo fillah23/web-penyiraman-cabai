@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="logo px-2 mt-1">
                     <a href=""><img src="{{ asset('logo.png') }}" alt="Logo"
-                            srcset="" style="width: 150px; height: auto;"></a>
+                            srcset="" style="width: 100px; height: auto;"></a>
                 </div>
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -41,13 +41,23 @@
         </div>
         <div class="sidebar-menu">
             <ul class="menu">
-                <!-- Data User Section -->
+                <!-- Dashboard Section -->
+                <li class="sidebar-item {{ Request::is('dashboard*') ? 'active' : '' }}">
+                    <a href="/dashboard" class='sidebar-link'>
+                        <i class="bi bi-house-door-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Data User Section (Admin Only) -->
+                @if(auth()->user()->role === "admin") <!-- Role 1 untuk Admin -->
                 <li class="sidebar-item {{ Request::is('users*') ? 'active' : '' }}">
                     <a href="/users" class='sidebar-link'>
                         <i class="bi bi-person-lines-fill"></i>
                         <span>Data User</span>
                     </a>
                 </li>
+                @endif
 
                 <!-- Monitoring Section -->
                 <li class="sidebar-item {{ Request::is('monitoring*') ? 'active' : '' }}">

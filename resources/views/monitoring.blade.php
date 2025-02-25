@@ -2,7 +2,102 @@
 
 @section('contents')
 @include('layouts.sidebar')
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Poppins', sans-serif;
+    }
 
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: #e9ecef;
+        border-radius: 10px;
+    }
+
+    .toggle-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+    }
+
+    .range-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    .range-input {
+        width: 45%;
+    }
+    /* Custom Range Slider Styling */
+    input[type="range"] {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: linear-gradient(90deg, #28a745 0%, #17a2b8 100%);
+        border-radius: 5px;
+        outline: none;
+        transition: background 0.3s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border: 2px solid #17a2b8;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="range"]:active::-webkit-slider-thumb {
+        background-color: #17a2b8;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border: 2px solid #17a2b8;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .range-value {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .status-container {
+        background-color: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
 <div id="main">
     <header class="mb-3">
         <a href="#" class="burger-btn d-block d-xl-none">
@@ -15,7 +110,7 @@
     <!-- Card for Monitoring Sensors -->
     <div class="container mt-5">
         <div class="row text-center">
-            <!-- SUHU -->
+            {{-- <!-- SUHU -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header bg-success text-white">
@@ -43,10 +138,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- SOIL -->
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-success text-white">
                         <h4>SOIL</h4>
@@ -63,9 +158,9 @@
     </div>
 
     <!-- Management Section (Kelola Lahan) -->
-    <div class="container mt-4">
+    <div class="container mt-0">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header bg-info text-white text-center">
                         <h4>KELOLA LAHAN</h4>
@@ -85,7 +180,7 @@
 
                         <!-- Penyiraman Otomatis -->
                         <div class="card-body d-flex justify-content-between align-items-center">
-                            <h4>Perkiraan Penyiraman</h4>
+                            <h4>Penyiraman Otomatis</h4>
                             <input type="checkbox" name="otomasi" id="otomasi" data-toggle="toggle" data-on="ON"
                                 data-off="OFF" data-onstyle="success" data-offstyle="danger"
                                 onchange="updatePenyiraman()">
@@ -96,15 +191,15 @@
                             <div class="row">
                                 <div class="col">
                                     <label>Batas Bawah</label>
-                                    <input type="range" name="batas_bawah" id="batas_bawah" min="1" max="10" value="1"
+                                    <input type="range" name="batas_bawah" id="batas_bawah" min="1" max="10" 
                                         onchange="updatePenyiraman()">
-                                    <span id="batas_bawah_value">1</span> <!-- Set initial value -->
+                                    <span id="batas_bawah_value"></span> <!-- Set initial value -->
                                 </div>
                                 <div class="col">
                                     <label>Batas Atas</label>
-                                    <input type="range" name="batas_atas" id="batas_atas" min="1" max="10" value="10"
+                                    <input type="range" name="batas_atas" id="batas_atas" min="1" max="10" 
                                         onchange="updatePenyiraman()">
-                                    <span id="batas_atas_value">10</span> <!-- Set initial value -->
+                                    <span id="batas_atas_value"></span> <!-- Set initial value -->
                                 </div>
                             </div>
                         </div>
@@ -118,25 +213,6 @@
                 </div>
             </div>
 
-            <!-- Irigasi Lahan Section -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h4>IRIGASI LAHAN</h4>
-                    </div>
-                    <div class="card-body d-flex justify-content-between">
-                        <div class="status">
-                            <p>Normal <span class="status-indicator bg-success"></span></p>
-                            <p>Sedang <span class="status-indicator bg-warning"></span></p>
-                            <p>Melebihi Normal <span class="status-indicator bg-danger"></span></p>
-                        </div>
-                        <div class="controls">
-                            <button class="btn btn-primary mb-2" id="toggleOnButton">Nyalakan Pompa</button>
-                            <button class="btn btn-danger" id="toggleOffButton">Matikan Pompa</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -191,7 +267,7 @@
     }
 
     // Function to fetch string data from Blynk API
-    // Function to fetch string data from Blynk API
+    let prevStatusPenyiraman = "";
     function getBlynkValueString(id) {
         const apiUrl = `https://blynk.cloud/external/api/get?token=gRRmgZMZ4OJwUckS0oKJwcvGXYud1Ha3&${id}`;
 
@@ -220,6 +296,16 @@
                     }
                     if (id === 'v7') {
                         $('#status_penyiraman').text(data);
+                        // Simpan data hanya jika status berubah
+                        if (data.trim() === "Pompa Hidup" && prevStatusPenyiraman !== "Pompa Hidup") {
+                            prevStatusPenyiraman = data.trim(); // Update status terbaru
+
+                            // Kirim data ke Laravel API
+                            fetch('/api/blynk-data', { method: 'GET' })
+                            .then(response => response.json())
+                            .then(res => console.log(res.message))
+                            .catch(error => console.error('Error sending data to Laravel:', error));
+                        }
                     }
 
                 })
